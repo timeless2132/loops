@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using System.Transactions;
@@ -48,7 +49,6 @@ namespace loops
             Console.WriteLine(loading);
             Thread.Sleep(loadingTime);
             Console.Clear();
-            
         }
         
         static void Main(string[] args)
@@ -60,6 +60,7 @@ namespace loops
 
             while (menu == true)
             {
+                loading();
                 Console.Clear();
                 Console.WriteLine("Wecome To The Menu");
                 Console.WriteLine("Choose one on the following:");
@@ -84,6 +85,8 @@ namespace loops
                 
                 if (userChoice == "bank of blorb" || userChoice == "2")
                 {
+                    loading();
+                    Console.Clear();
                     double balence = 150;
                     bool lobby = true;
                     bool depositLoop = false;
@@ -108,20 +111,93 @@ namespace loops
 
                         if (lobbyChoice == "1" || lobbyChoice == "deposit")
                         {
-                            loading();
                             Console.Clear();
                             lobby = false;
                             depositLoop = true;
 
-                            Console.WriteLine("Enter How Much You Would Like to Deposit:");
-                            double deposit = Convert.ToDouble(Console.ReadLine());
-                            Console.WriteLine();
+                            while (depositLoop == true)
+                            {
+                                Console.WriteLine("Enter How Much You Would Like to Deposit:");
+                                double deposit = Convert.ToDouble(Console.ReadLine());
+                                Console.WriteLine();
 
-                            balence = (deposit + balence) - 0.75;
-                            Console.WriteLine("New balence: " + balence);
+                                balence = (deposit + balence) - 0.75;
+                                Console.WriteLine("New balence: " + balence);
+                                Thread.Sleep(1000);
+                                depositLoop = false;
+                            }
 
                         }
+                        else if (lobbyChoice == "2" || lobbyChoice == "wtihdrawal")
+                        {
+                            Console.Clear();
+                            lobby = false;
+                            withdrawalLoop = true;
+                            
+                            while (withdrawalLoop == true)
+                            {
+                                Console.WriteLine("Enter the amount you want to withdrawal: ");
+                                double withdrawal = Convert.ToDouble(Console.ReadLine());
+                                while (!double.TryParse(Console.ReadLine(), out withdrawal))
+                                    Console.WriteLine("Please enter a valid number");
+                                
+                                if (withdrawal > (balence - 0.75) || withdrawal < 0)
+                                {
+                                    Console.WriteLine("Invaled Number.");
+                                    Thread.Sleep(750);
+                                    Console.Clear();
+                                }
+                                else
+                                {
+                                    balence -= withdrawal;
+                                    Console.WriteLine("Thank you, Your new balence is: " + balence);
+                                    Thread.Sleep(1000);
+                                    withdrawalLoop = false;
+                                    lobby = true;
+                                }
+                                
+                                
 
+                            }
+
+                        }
+                        else if (lobbyChoice == "3" || lobbyChoice == "bill payment")
+                        {
+                            Console.Clear();
+                            lobby = false;
+                            billPaymentLoop = true;
+                            double bill = balence * 0.20;
+                            balence = balence - 0.75;
+                            while (billPaymentLoop == true)
+                            {
+                                Console.WriteLine("You owe $ " + bill + " in bills.");
+                                Console.WriteLine("Enter how much u want to pay");
+                                double payAmount;
+                                while (!double.TryParse(Console.ReadLine(), out payAmount))
+                                    Console.WriteLine("Please enter a valid number");
+
+                                if (payAmount > bill || payAmount < 0)
+                                {
+                                    Console.WriteLine("You do not owe that much.");
+                                    Thread.Sleep(750);
+                                    Console.Clear();
+                                }
+                                else if (payAmount > balence)
+                                {
+                                    Console.WriteLine("You do not have enough.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Thank you.");
+                                    Thread.Sleep(750);
+                                    lobby = true;
+                                    billPaymentLoop = false;
+                                }
+
+
+                            }
+
+                        }
 
                     }
                      
@@ -132,6 +208,7 @@ namespace loops
 
                 if (userChoice == "prompter" || userChoice == "1")
                 {
+                    loading();
                     Console.Clear();
                     menu = false;
                     bool maxMinCorrect = true;
