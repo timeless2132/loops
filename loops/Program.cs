@@ -3,6 +3,7 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using System.Transactions;
+using Die;
 
 namespace loops
 {
@@ -53,9 +54,9 @@ namespace loops
         
         static void Main(string[] args)
         {
-            
-            
-            
+
+
+           
             bool menu = true;
 
             while (menu == true)
@@ -72,7 +73,7 @@ namespace loops
                 Console.WriteLine("2 - Bank of Blorb");
                 Console.WriteLine();
 
-                Console.WriteLine("x - Menu Option X");
+                Console.WriteLine("x - Dice");
                 Console.WriteLine();
 
                 Console.WriteLine("q - Quit");
@@ -81,7 +82,59 @@ namespace loops
                 var userChoice = Console.ReadLine().ToLower().Trim();
                 Console.WriteLine();
 
-               
+                if (userChoice == "q" || userChoice == "quit")
+                {
+                    Console.Clear();
+                    menu = false;
+                }
+                
+                if (userChoice == "die" || userChoice == "x")
+                {
+                    Console.Clear();
+                    menu = false;
+                    die die1, die2;
+                    die1 = new die();
+                    die2 = new die();
+
+                    if (die1.Roll == die2.Roll)
+                    {
+                        Console.WriteLine("Doubles");
+                    }
+                    else { Console.WriteLine("Not Doubles"); }
+
+                    if (die1.Roll + die2.Roll == 7)
+                    {
+                        Console.WriteLine("They sum of the two numbers is 7");
+                    }
+                    else if (die1.Roll == 1 && die2.Roll == 1)
+                    {
+                        Console.WriteLine("Snake eyes");
+                    }
+                    else if (die1.Roll - 1 == die2.Roll || die1.Roll + 1 == die2.Roll || die2.Roll - 1 == die1.Roll || die2.Roll + 1 == die2.Roll)
+                    {
+                        Console.WriteLine("The numbers are sequential");
+                    }
+                    else if ((die1.Roll + die2.Roll) % 2 == 0)
+                    {
+                        Console.WriteLine("The numbers are even");
+                    }
+
+                    Console.WriteLine(die1);
+                    die1.DrawDie();
+                    Console.WriteLine(die2);
+                    die2.DrawDie();
+
+                    if (die1.Roll > die2.Roll)
+                    {
+                        Console.WriteLine("Die 1 is greater than die 2");
+                    }
+                    else
+                        Console.WriteLine("Die 2 is greater than die 1");
+
+                    Thread.Sleep(2000);
+                    Console.Clear();
+                    menu = true;
+                }
                 
                 if (userChoice == "bank of blorb" || userChoice == "2")
                 {
@@ -197,6 +250,12 @@ namespace loops
 
                             }
 
+                        }
+                        else if (lobbyChoice == "4" || lobbyChoice == "balence")
+                        {
+                            balence -= 0.75;
+                            Console.WriteLine("Your balence is: $" + balence);
+                            Thread.Sleep(1500);
                         }
 
                     }
